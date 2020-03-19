@@ -1,0 +1,11 @@
+Esta es una prueba de escritura,
+se puede borrar sin problema
+ESta genial, puedo escribir lo que quiera en este archivo,
+lo único que hay que hacer es usar el método 'write' con el
+"hanler", y el argumento es la línea de texto
+ 
+ESto es para ver si puedo escribir dos textos distintos
+ 
+Hasta 3, 4 o los que quiera en el mismo script
+
+YEAAAHH BABYYYY

@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html>
+ <!-- InstanceBegin template="/Templates/PlantillaSic.dwt" codeOutsideHTMLIsLocked="false" -->
+ <head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <!--  revolution slider plugin : begin -->
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/rs-plugin/css/settings.css" media="screen" rel="stylesheet" type="text/css"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/rs-responsive.css" media="screen" rel="stylesheet" type="text/css"/>
+  <!--  revolution slider plugin : end -->
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/bootstrap.css" rel="stylesheet"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/custom.css" rel="stylesheet"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/isotope.css" rel="stylesheet"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/color_scheme.css" rel="stylesheet"/>
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic" rel="stylesheet" type="text/css"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/font-awesome.css" rel="stylesheet"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/font-awesome-ie7.css" rel="stylesheet"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/flexslider.css" rel="stylesheet"/>
+  <link href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/jquery.fancybox.css?v=2.1.0" media="screen" rel="stylesheet" type="text/css"/>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/jquery1-7-2.min.js" type="text/javascript">
+  </script>
+  <!--[if lte IE 8]>
+            <link rel="stylesheet" type="text/css" href="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/css/IE-fix.css" />
+        <![endif]-->
+  <style>
+   @media (max-width: 480px) {
+        	input, select, textarea {margin-top:8px;}
+	.mid-barra h2 {color:#666 !important; background-image:url("http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/img/tri1.png") !important;}
+	.resultados td {font-size:1.2em; display:block; width:95% !important;}
+	.listado td {font-size:1.2em; display:block; width:95% !important;}
+	.listado tr {border-bottom:3px solid #ccc;}
+	.listado th {font-size:1.2em; border-top:3px solid #ccc !important; background-color:#eee; display:block; width:95% !important;} }
+  </style>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <link class="lfr-css-file" href="../../../../PlantillaSic/main.css" rel="stylesheet" type="text/css"/>
+  <!-- InstanceBeginEditable name="doctitle" -->
+  <title>
+   Sistema de TrámitesConsulta de Trámites            - www.sic.gov.co
+  </title>
+  <script language="JavaScript" src="../Librerias/mijavascript/Libconsrad.js">
+  </script>
+  <script language="JavaScript">
+   var boton = "";
+            var vgval = "";
+            function validanumrad(objeto, vfolio) {
+                if (vgval == " " || vgval == "" || vgval == objeto.name) {
+                    vgval = objeto.name;
+                    if ((document.Fconstram.fnumeradi.value != ' ') && (!esnumero(document.Fconstram.fnumeradi.value))) {
+                        alert("Debe ingresar solamente dígitos en el campo Numero");
+                        document.Fconstram.fnumeradi.value = '';
+                        document.Fconstram.fnumeradi.focus();
+                        return false;
+                    }
+                    vgval = " ";
+                }
+                return true;
+            }
+            function validaconsradi(objeto, vfolio) {
+                if (vgval == " " || vgval == "" || vgval == objeto.name) {
+                    vgval = objeto.name;
+                    if ((document.Fconstram.fconsradi.value != ' ') && (!esnumero(document.Fconstram.fconsradi.value))) {
+                        alert("Debe ingresar solamente dígitos en el campo Cons Rad");
+                        document.Fconstram.fconsradi.value = '';
+                        document.Fconstram.fconsradi.focus();
+                        return false;
+                    }
+                    vgval = " ";
+                }
+                return true;
+            }
+            function validasecueven(objeto, vfolio) {
+                if (vgval == " " || vgval == "" || vgval == objeto.name) {
+                    vgval = objeto.name;
+                    if ((document.Fconstram.fsecueven.value != ' ') && (!esnumero(document.Fconstram.fsecueven.value))) {
+                        alert("Debe ingresar solamente dígitos en el campo Secu even");
+                        document.Fconstram.fsecueven.value = '';
+                        document.Fconstram.fsecueven.focus();
+                        return false;
+                    }
+                    vgval = " ";
+                }
+                return true;
+            }
+            function ValidaConsulta(miforma) {
+                return (true);
+            }
+
+            function abrir_ventana(url)
+            {
+                //	alert(url);
+
+                //	window.open(url, "_blank", "directories=no,fullscreen=no,status=no,toolbar=no, location=no,scrollbars=yes,titlebar=no,menubar=no");
+                window.open(url, '_blank', "width=900,height=750,toolbar=no,scrollbars=no,location=no,resizable=yes,titlebar=no,menubar=no,directories=no");
+
+
+            }
+            
+            function cargarAcumulados(ano_radi, nume_radi, cont_radi, cons_radi){
+                
+                //Inyectamos los valores de los titulos
+                jQuery('#anoRadAcum').html(ano_radi);
+                jQuery('#numeRadAcum').html(nume_radi);
+                jQuery('#contRadAcum').html(cont_radi);
+                jQuery('#consRadAcum').html(cons_radi);
+                
+                
+                var cadenaDatos = "pano="+ano_radi+"&pnume="+nume_radi+"&pcont="+cont_radi+"&pcons="+cons_radi;
+    
+                jQuery('#cuerpoModal').html("");
+                jQuery.ajax({ 
+                    data: cadenaDatos,
+                    encoding:"UTF-8",
+                    type: 'get', 
+                    url: 'ConsultaAcumuladosJM.php', 
+                    success: function(response) { 
+                        jQuery('#cuerpoModal').html(response);
+                       }
+                   });
+                        
+                   
+                
+            }
+  </script>
+  <style type="text/css">
+   table{
+                width:750px;
+            }
+            .table td, .table th{
+                padding: 6px;
+            }
+
+            body {
+                margin-left: 0px;
+                margin-top: 0px;
+            }
+            input[type=text]{
+                height: 19px;
+                font-size: 11px;
+                font-family: Verdana, Arial, Arial Narrow;
+            }
+            select{
+                font-family: verdana; 
+                font-size : 8pt; 
+            }
+  </style>
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <!-- HEADER: LOGO AREA -->
+     <div class="span4 logo">
+      <a class="logo" href="http://www.sic.gov.co">
+       <img alt="Ir a la página de la Superintendencia de Industria y Comercio" src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/img/logo_ind.png" title="Ir a la página de la Superintendencia de Industria y Comercio"/>
+      </a>
+     </div>
+     <div class="span4a logo">
+      <img alt="Prosperidad para todos" src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/img/prosperidad.png" title="Prosperidad para todos"/>
+     </div>
+     <div class="span4b logo">
+      <img alt="La respuesta es Colombia" height="75" src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/img/respuesta.png" title="La respuesta es Colombia" width="165"/>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="mid-barra" id="primtit">
+   <h1>
+    .:: CONSULTA DE TRAMITES ::.
+   </h1>
+   <h2>
+    Sabado 27 de Febrero de 2016
+   </h2>
+  </div>
+  <div class="container" style="width:95%">
+   <table align="center" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+     <td>
+      <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" style="top:100px" tabindex="-1">
+       <div class="modal-dialog">
+        <div class="modal-content">
+         <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">
+           <span aria-hidden="true">
+            x
+           </span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+           Acumulados del Expediente   Ańo :
+           <span id="anoRadAcum">
+           </span>
+           Número:
+           <span id="numeRadAcum">
+           </span>
+           Ctrl:
+           <span id="contRadAcum">
+           </span>
+           Cons:
+           <span id="consRadAcum">
+           </span>
+          </h4>
+         </div>
+         <div class="modal-body" id="cuerpoModal">
+         </div>
+         <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" type="button">
+           Cerrar
+          </button>
+         </div>
+        </div>
+       </div>
+      </div>
+      <form id="Forma1" method="POST" name="Fconstram" onsubmit="return ValidaConsulta(this)">
+       <input id="numepagi" name="numepagi" type="hidden" value="0"/>
+       <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+        <tr>
+         <td nowrap="nowrap" rowspan="2">
+          <div class="btn-group">
+           <input class="btn btn-primary" name="Primero" type="submit" value=" |&lt; "/>
+           <input class="btn btn-primary" name="Anterior" type="submit" value="  &lt; "/>
+           <input class="btn btn-primary" name="Siguiente" type="submit" value=" &gt;  "/>
+           <input class="btn btn-primary" name="Ultimo" type="submit" value=" &gt;| "/>
+          </div>
+         </td>
+        </tr>
+       </table>
+       <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+         <td colspan="8" height="0">
+          <h2>
+           Datos del Trámite (PENDIENTE)
+          </h2>
+          <table border="0" cellpadding="0" cellspacing="0" class="table table-striped" id="tabla1" style="border: 0px;" width="947px">
+           <tr>
+            <td class="label_txt" valign="bottom" width="15%">
+             Radicación:
+            </td>
+            <td colspan="4" nowrap="" valign="bottom">
+             Ańo:
+             <select id="fanoradi" name="fanoradi" style="width:80px">
+              <option value="">
+              </option>
+              <option value="16">
+               2016
+              </option>
+              <option value="15">
+               2015
+              </option>
+              <option value="14">
+               2014
+              </option>
+              <option value="13">
+               2013
+              </option>
+              <option value="12">
+               2012
+              </option>
+              <option value="11">
+               2011
+              </option>
+              <option value="10">
+               2010
+              </option>
+              <option value="9">
+               2009
+              </option>
+              <option value="8">
+               2008
+              </option>
+              <option value="7">
+               2007
+              </option>
+              <option value="6">
+               2006
+              </option>
+              <option value="5">
+               2005
+              </option>
+              <option value="4">
+               2004
+              </option>
+              <option value="3">
+               2003
+              </option>
+              <option value="2">
+               2002
+              </option>
+              <option value="1">
+               2001
+              </option>
+              <option value="0">
+               2000
+              </option>
+              <option value="99">
+               1999
+              </option>
+              <option value="98">
+               1998
+              </option>
+              <option value="97">
+               1997
+              </option>
+              <option value="96">
+               1996
+              </option>
+              <option value="95">
+               1995
+              </option>
+              <option value="94">
+               1994
+              </option>
+              <option value="93">
+               1993
+              </option>
+              <option value="92">
+               1992
+              </option>
+              <option value="91">
+               1991
+              </option>
+              <option value="90">
+               1990
+              </option>
+              <option value="89">
+               1989
+              </option>
+              <option value="88">
+               1988
+              </option>
+              <option value="87">
+               1987
+              </option>
+              <option value="86">
+               1986
+              </option>
+              <option value="85">
+               1985
+              </option>
+              <option value="84">
+               1984
+              </option>
+              <option value="83">
+               1983
+              </option>
+              <option value="82">
+               1982
+              </option>
+              <option value="81">
+               1981
+              </option>
+              <option value="80">
+               1980
+              </option>
+              <option value="79">
+               1979
+              </option>
+              <option value="78">
+               1978
+              </option>
+              <option value="77">
+               1977
+              </option>
+              <option value="76">
+               1976
+              </option>
+              <option value="75">
+               1975
+              </option>
+              <option value="74">
+               1974
+              </option>
+              <option value="73">
+               1973
+              </option>
+              <option value="72">
+               1972
+              </option>
+              <option value="71">
+               1971
+              </option>
+              <option value="70">
+               1970
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+             Número:
+             <input id="fnumeradi" maxlength="7" name="fnumeradi" onblur="if ( !validanumrad(this,this.value) ) { this.focus(); this.select(); } " size="9" style="width:150px;" type="text" value="279296"/>
+             <font color="green" size="2">
+              *
+             </font>
+             Ctrl:
+             <input name="fcontradi" size="2" style="width:140px" type="text" value=""/>
+             <font color="green" size="2">
+              *
+             </font>
+             Cons Rad:
+             <input maxlength="6" name="fconsradi" onblur="if (!validaconsradi(this,this.value) ) {this.focus();this.select();} " size="6" style="width:140px" type="text" value=""/>
+             <font color="green" size="2">
+              *
+             </font>
+             Secu Even:
+             <input maxlength="3" name="fsecueven" onblur="if (!validasecueven(this,this.value) ) {this.focus();this.select();} " size="4" style="width:140px" type="text" value=" "/>
+             <font color="green" size="2">
+              *
+             </font>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" valign="bottom" width="15%">
+             Código Único Numérico:
+            </td>
+            <td colspan="4" valign="bottom">
+             IO:
+             <input name="fio" size="4" type="text" value=""/>
+             <font color="green" size="2">
+              *
+             </font>
+             AA:
+             <select name="faa" size="1" style="width:80px">
+              <option value="">
+              </option>
+              <option value="16">
+               2016
+              </option>
+              <option value="15">
+               2015
+              </option>
+              <option value="14">
+               2014
+              </option>
+              <option value="13">
+               2013
+              </option>
+              <option value="12">
+               2012
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+             CR:
+             <input name="fcr" size="10" type="text" value=""/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Tipo Trámite:
+            </td>
+            <td colspan="4">
+             <select id="fmdtram" name="fcoditram" style="width: 900px">
+              <option value="">
+              </option>
+              <option value="2">
+               2    PATENTES DE INVENCION
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Tipo Evento:
+            </td>
+            <td colspan="4" id="filaeven">
+             <select id="fmdeven" name="fcodieven" size="1" style="width: 900px">
+              <option value=" ">
+              </option>
+              <option value="1">
+               001.     REGISTRO/DEPOSITO/CONCESION/DEPOSITO
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Tipo Actuación:
+            </td>
+            <td colspan="4" id="filaactu">
+             <select id="fmdactu" name="fcodiactu" size="1" style="width: 900px">
+              <option value=" ">
+              </option>
+              <option value="411">
+               411.     PRESENTACION
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Dependencia Origen:
+            </td>
+            <td colspan="4" id="filadeor">
+             <select id="fmddeor" name="fcodideor" size="1" style="width: 900px; ">
+              <option value=" ">
+               ___
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Dependencia Destino:
+            </td>
+            <td colspan="4">
+             <select id="fmddede" name="fcodidede" size="1" style="width: 900px; ">
+              <option value=" ">
+              </option>
+              <option value="2020">
+               2020.     DIRECCION DE NUEVAS CREACIONES
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Solicitante/Destinatario:
+            </td>
+            <td colspan="7">
+             <input name="fidenpers" size="80" style="width:300px;" type="text"/>
+             <font color="green" size="2">
+              *
+             </font>
+             Tipo:
+             <select name="fbptipo">
+              <option selected="" value="CO">
+               Contenida
+              </option>
+              <option value="EM">
+               Empieza por
+              </option>
+              <option value="TE">
+               Termina en
+              </option>
+             </select>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Identificación
+            </td>
+            <td colspan="4" width="83%">
+             <select name="fdocumento" size="1" style="font-family: verdana; font-size : 8pt;">
+              <option value="  ">
+              </option>
+              <option value="CC">
+               CC  .    CEDULA DE CIUDADANIA
+              </option>
+              <option value="CE">
+               CE  .    CEDULA DE EXTRANJERIA
+              </option>
+              <option value="DT">
+               DT  .    DOCUMENTO TEMPORAL
+              </option>
+              <option value="EE">
+               EE  .    EMPRESA EXTRANJERA
+              </option>
+              <option value="II">
+               II  .    IDENTIFICACION INTERNACIONAL
+              </option>
+              <option value="MA">
+               MA  .    MATRICULA MERCANTIL
+              </option>
+              <option value="NI">
+               NI  .    NIT
+              </option>
+              <option value="NC">
+               NC  .    NIT DEL CAPITULO
+              </option>
+              <option value="NN">
+               NN  .    NO IDENTIFICADO
+              </option>
+              <option value="NU">
+               NU  .    NUIP
+              </option>
+              <option value="OT">
+               OT  .    OTRO DOCUMENTO
+              </option>
+              <option value="PA">
+               PA  .    PASAPORTE
+              </option>
+              <option value="RC">
+               RC  .    REGISTRO CIVIL
+              </option>
+              <option value="TI">
+               TI  .    TARJETA DE IDENTIDAD
+              </option>
+              <option value="TP">
+               TP  .    TARJETA PROFESIONAL
+              </option>
+             </select>
+             Número:
+             <input maxlength="20" name="fnumero" size="20" style="width:280px;" type="text"/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Dirección:
+            </td>
+            <td colspan="4">
+             <input align="left" name="ladireccion" size="80" style="width:560px;" type="text"/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Tipo de Radicación:
+            </td>
+            <td colspan="7">
+             <select id="fmdradi" name="ftiporadi" size="1">
+              <option value=" ">
+              </option>
+              <option value="EN">
+               EN  .    ENTRADA
+              </option>
+             </select>
+             <font color="green" size="2">
+              *
+             </font>
+             Folios:
+             <input name="ftotafoli" size="10" style="width:70px" type="text"/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" valign="top" width="15%">
+             Fecha de Radicación:
+            </td>
+            <td colspan="7" width="45%">
+             Dia:
+             <select name="fdiafecrad" size="1" style="width:70px">
+              <option value=" ">
+              </option>
+              <option value="01">
+               1
+              </option>
+              <option value="02">
+               2
+              </option>
+              <option value="03">
+               3
+              </option>
+              <option value="04">
+               4
+              </option>
+              <option value="05">
+               5
+              </option>
+              <option value="06">
+               6
+              </option>
+              <option value="07">
+               7
+              </option>
+              <option value="08">
+               8
+              </option>
+              <option value="09">
+               9
+              </option>
+              <option value="10">
+               10
+              </option>
+              <option value="11">
+               11
+              </option>
+              <option value="12">
+               12
+              </option>
+              <option value="13">
+               13
+              </option>
+              <option value="14">
+               14
+              </option>
+              <option value="15">
+               15
+              </option>
+              <option value="16">
+               16
+              </option>
+              <option value="17">
+               17
+              </option>
+              <option value="18">
+               18
+              </option>
+              <option value="19">
+               19
+              </option>
+              <option value="20">
+               20
+              </option>
+              <option value="21">
+               21
+              </option>
+              <option value="22">
+               22
+              </option>
+              <option value="23">
+               23
+              </option>
+              <option value="24">
+               24
+              </option>
+              <option value="25">
+               25
+              </option>
+              <option value="26">
+               26
+              </option>
+              <option value="27">
+               27
+              </option>
+              <option value="28">
+               28
+              </option>
+              <option value="29">
+               29
+              </option>
+              <option value="30">
+               30
+              </option>
+              <option value="31">
+               31
+              </option>
+             </select>
+             Mes:
+             <select name="fmesfecrad" size="1" style="width:100px">
+              <option value=" ">
+              </option>
+              <option value="01">
+               Enero
+              </option>
+              <option value="02">
+               Febrero
+              </option>
+              <option value="03">
+               Marzo
+              </option>
+              <option value="04">
+               Abril
+              </option>
+              <option value="05">
+               Mayo
+              </option>
+              <option value="06">
+               Junio
+              </option>
+              <option value="07">
+               Julio
+              </option>
+              <option value="08">
+               Agosto
+              </option>
+              <option value="09">
+               Septiembre
+              </option>
+              <option value="10">
+               Octubre
+              </option>
+              <option value="11">
+               Noviembre
+              </option>
+              <option value="12">
+               Diciembre
+              </option>
+             </select>
+             Ańo:
+             <select name="fanofecrad" size="1" style="width:100px">
+              <option value=" ">
+              </option>
+              <option value="2016">
+               2016
+              </option>
+              <option value="2015">
+               2015
+              </option>
+              <option value="2014">
+               2014
+              </option>
+              <option value="2013">
+               2013
+              </option>
+              <option value="2012">
+               2012
+              </option>
+              <option value="2011">
+               2011
+              </option>
+              <option value="2010">
+               2010
+              </option>
+              <option value="2009">
+               2009
+              </option>
+              <option value="2008">
+               2008
+              </option>
+              <option value="2007">
+               2007
+              </option>
+              <option value="2006">
+               2006
+              </option>
+              <option value="2005">
+               2005
+              </option>
+              <option value="2004">
+               2004
+              </option>
+              <option value="2003">
+               2003
+              </option>
+              <option value="2002">
+               2002
+              </option>
+              <option value="2001">
+               2001
+              </option>
+              <option value="2000">
+               2000
+              </option>
+              <option value="1999">
+               1999
+              </option>
+              <option value="1998">
+               1998
+              </option>
+              <option value="1997">
+               1997
+              </option>
+              <option value="1996">
+               1996
+              </option>
+              <option value="1995">
+               1995
+              </option>
+              <option value="1994">
+               1994
+              </option>
+              <option value="1993">
+               1993
+              </option>
+              <option value="1992">
+               1992
+              </option>
+              <option value="1991">
+               1991
+              </option>
+              <option value="1990">
+               1990
+              </option>
+              <option value="1989">
+               1989
+              </option>
+              <option value="1988">
+               1988
+              </option>
+              <option value="1987">
+               1987
+              </option>
+              <option value="1986">
+               1986
+              </option>
+              <option value="1985">
+               1985
+              </option>
+              <option value="1984">
+               1984
+              </option>
+              <option value="1983">
+               1983
+              </option>
+              <option value="1982">
+               1982
+              </option>
+              <option value="1981">
+               1981
+              </option>
+              <option value="1980">
+               1980
+              </option>
+              <option value="1979">
+               1979
+              </option>
+              <option value="1978">
+               1978
+              </option>
+              <option value="1977">
+               1977
+              </option>
+              <option value="1976">
+               1976
+              </option>
+              <option value="1975">
+               1975
+              </option>
+              <option value="1974">
+               1974
+              </option>
+              <option value="1973">
+               1973
+              </option>
+              <option value="1972">
+               1972
+              </option>
+              <option value="1971">
+               1971
+              </option>
+              <option value="1970">
+               1970
+              </option>
+              <option value="1969">
+               1969
+              </option>
+              <option value="1968">
+               1968
+              </option>
+              <option value="1967">
+               1967
+              </option>
+              <option value="1966">
+               1966
+              </option>
+              <option value="1965">
+               1965
+              </option>
+              <option value="1964">
+               1964
+              </option>
+              <option value="1963">
+               1963
+              </option>
+              <option value="1962">
+               1962
+              </option>
+              <option value="1961">
+               1961
+              </option>
+              <option value="1960">
+               1960
+              </option>
+              <option value="1959">
+               1959
+              </option>
+              <option value="1958">
+               1958
+              </option>
+              <option value="1957">
+               1957
+              </option>
+              <option value="1956">
+               1956
+              </option>
+              <option value="1955">
+               1955
+              </option>
+              <option value="1954">
+               1954
+              </option>
+              <option value="1953">
+               1953
+              </option>
+              <option value="1952">
+               1952
+              </option>
+              <option value="1951">
+               1951
+              </option>
+              <option value="1950">
+               1950
+              </option>
+              <option value="1949">
+               1949
+              </option>
+              <option value="1948">
+               1948
+              </option>
+              <option value="1947">
+               1947
+              </option>
+              <option value="1946">
+               1946
+              </option>
+              <option value="1945">
+               1945
+              </option>
+              <option value="1944">
+               1944
+              </option>
+              <option value="1943">
+               1943
+              </option>
+              <option value="1942">
+               1942
+              </option>
+              <option value="1941">
+               1941
+              </option>
+              <option value="1940">
+               1940
+              </option>
+              <option value="1939">
+               1939
+              </option>
+              <option value="1938">
+               1938
+              </option>
+              <option value="1937">
+               1937
+              </option>
+              <option value="1936">
+               1936
+              </option>
+              <option value="1935">
+               1935
+              </option>
+              <option value="1934">
+               1934
+              </option>
+              <option value="1933">
+               1933
+              </option>
+              <option value="1932">
+               1932
+              </option>
+              <option value="1931">
+               1931
+              </option>
+              <option value="1930">
+               1930
+              </option>
+              <option value="1929">
+               1929
+              </option>
+              <option value="1928">
+               1928
+              </option>
+              <option value="1927">
+               1927
+              </option>
+              <option value="1926">
+               1926
+              </option>
+              <option value="1925">
+               1925
+              </option>
+              <option value="1924">
+               1924
+              </option>
+              <option value="1923">
+               1923
+              </option>
+              <option value="1922">
+               1922
+              </option>
+              <option value="1921">
+               1921
+              </option>
+              <option value="1920">
+               1920
+              </option>
+              <option value="1919">
+               1919
+              </option>
+              <option value="1918">
+               1918
+              </option>
+              <option value="1917">
+               1917
+              </option>
+              <option value="1916">
+               1916
+              </option>
+              <option value="1915">
+               1915
+              </option>
+              <option value="1914">
+               1914
+              </option>
+              <option value="1913">
+               1913
+              </option>
+              <option value="1912">
+               1912
+              </option>
+              <option value="1911">
+               1911
+              </option>
+              <option value="1910">
+               1910
+              </option>
+              <option value="1909">
+               1909
+              </option>
+              <option value="1908">
+               1908
+              </option>
+              <option value="1907">
+               1907
+              </option>
+              <option value="1906">
+               1906
+              </option>
+              <option value="1905">
+               1905
+              </option>
+              <option value="1904">
+               1904
+              </option>
+              <option value="1903">
+               1903
+              </option>
+              <option value="1902">
+               1902
+              </option>
+              <option value="1901">
+               1901
+              </option>
+              <option value="1900">
+               1900
+              </option>
+             </select>
+             <input name="fhora" size="8" style="width:100px" type="text"/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt">
+             Entrega
+            </td>
+            <td colspan="7">
+             <input align="left" name="medioenvio" size="40" style="border-style:none;background-color:#dfdfdf;" type="text"/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Guia
+            </td>
+            <td colspan="4" width="83%">
+             <input maxlength="13" name="fnumeguia" size="15" type="text"/>
+             fecha:
+             <input align="left" name="fechguia" size="70" style="border-style:none;background-color:#dfdfdf;" type="text"/>
+            </td>
+           </tr>
+           <tr>
+            <td class="label_txt" width="15%">
+             Observaciones:
+            </td>
+            <td colspan="7" valign="bottom">
+             <textarea cols="180" name="observaciones" rows="3" style="border-style:none;background-color:#dfdfdf;width:500px">
+             </textarea>
+            </td>
+           </tr>
+          </table>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="8">
+          <h2>
+           Otros Datos
+          </h2>
+          <table border="0" class="table" id="tabla" style="border: 0px">
+           <tr>
+            <td colspan="5">
+            </td>
+           </tr>
+          </table>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="7">
+          <input class="btn btn-success" name="nueva" type="submit" value="Nueva Consulta"/>
+         </td>
+         <td width="353">
+          <div align="right">
+           <nobr>
+            [
+            <a href="javascript:top.window.close();" id="Cerrar Sesion" name="Cerrar Sesion">
+             Cerrar Sesión
+            </a>
+            ]
+           </nobr>
+          </div>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="8">
+         </td>
+        </tr>
+        <tr>
+         <td colspan="8">
+          <script language="JavaScript">
+           window.document.Fconstram.observaciones.value='';
+          </script>
+          <script language="JavaScript">
+           window.document.Fconstram.medioenvio.value='VENTANILLA                                                                                                              ';
+          </script>
+          <script language="JavaScript">
+           window.document.Fconstram.fechguia.value=' ';
+          </script>
+          <script language="JavaScript">
+           window.document.Fconstram.fanoradi.value='14';
+window.document.Fconstram.fnumeradi.value='279296';
+window.document.Fconstram.fcontradi.value='  ';
+window.document.Fconstram.fconsradi.value='0';
+window.document.Fconstram.fsecueven.value='0';
+window.document.Fconstram.fcoditram.value='2';
+window.document.Fconstram.fcodieven.value='1';
+window.document.Fconstram.fcodiactu.value='411';
+window.document.Fconstram.fcodideor.value='';
+window.document.Fconstram.fcodidede.value='2020';
+window.document.Fconstram.fidenpers.value='Ley Colombiana de Protección de Datos 1266 de 2008';
+window.document.Fconstram.fdocumento.value='CC';
+window.document.Fconstram.fnumero.value='1266 de 2008';
+window.document.Fconstram.ftiporadi.value='EN';
+window.document.Fconstram.ftotafoli.value='11';
+window.document.Fconstram.fdiafecrad.value='19';
+window.document.Fconstram.fmesfecrad.value='12';
+window.document.Fconstram.fanofecrad.value='2014';
+window.document.Fconstram.fhora.value='12:24:50';
+window.document.Fconstram.fnumeguia.value='';
+window.document.Fconstram.fio.value='';
+window.document.Fconstram.faa.value='';
+window.document.Fconstram.fcr.value='';
+window.document.Fconstram.ladireccion.value='Ley Colombiana de Protección de Datos No.1266 de 2008';
+          </script>
+          <table border="0" cellpadding="0" cellspacing="0" class="table" id="tablaResultados">
+           <tr style="background-color:#0066CC; color:#FFFFFF;">
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="21px">
+             <div align="center">
+              Ańo
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="45px">
+             <div align="center">
+              Número
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="19px">
+             <div align="center">
+              Ctrl
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="56px">
+             <div align="center">
+              Cons Rad
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="44px">
+             <div align="center">
+              Sec Eve
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="86px">
+             <div align="center">
+              Trámite
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="48px">
+             <div align="center">
+              Evento
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="100px">
+             <div align="center">
+              Actuación
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="24px">
+             <div align="center">
+              Tipo
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="64px">
+             <div align="center">
+              Fecha
+             </div>
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 10px;vertical-align:top;" width="300px">
+             <div align="center">
+              Solicitante
+             </div>
+            </td>
+            <td colspan="3" style="margin-left: 10px;vertical-align:top;" width="96px">
+             <div align="center">
+              Asignacion/
+              <br/>
+              Estado-Correspondencia
+             </div>
+            </td>
+            <td colspan="3" style="margin-left: 10px;vertical-align:top;" width="12px%">
+             <div align="center">
+             </div>
+            </td>
+           </tr>
+           <tr bgcolor="#F4F4F4" onclick="javascript:window.location.replace('ConsultaRadicacion.php?buscando=radi&amp;vano=14&amp;vnum=279296&amp;vcon=  &amp;vcos=0&amp;vtemaa=0');" onmouseout="this.style.backgroundColor='#F4F4F4'" onmouseover="this.style.backgroundColor='#0099FF';this.style.cursor='hand';">
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             14
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             279296
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="text-align:center; margin-left: 8px;vertical-align:top;">
+             0
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="text-align:center; margin-left: 8px;vertical-align:top;">
+             0
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             PATENTES DE INVENCION
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             REGISTRO/DEPOSITO/CONCESION/DEPOSITO
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             PRESENTACION
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             EN
+            </td>
+            <td>
+            </td>
+            <td colspan="1" nowrap="nowrap" style="margin-left: 8px;vertical-align:top;">
+             2014-12-19
+             <br/>
+             12:24:50
+            </td>
+            <td>
+            </td>
+            <td colspan="1" style="margin-left: 8px;vertical-align:top;">
+             HUGO DANIEL GONZALEZ HERNANDEZ
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+             ++++
+            </td>
+           </tr>
+          </table>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="8">
+          <p style="text-align:left">
+           <input align="left" name="registros" size="60" style="border-style:none;background-color:#FFFFFF;" type="text"/>
+          </p>
+         </td>
+        </tr>
+       </table>
+       <script language="JavaScript">
+        window.document.Fconstram.registros.value='Registro :1 / 1';
+       </script>
+       <script language="JavaScript">
+        window.document.Fconstram.salir.disabled=true;
+       </script>
+       <script language="JavaScript">
+        window.document.Fconstram.salir.disabled=true;
+       </script>
+      </form>
+     </td>
+    </tr>
+   </table>
+  </div>
+  <footer id="footer2">
+   <p class="center">
+    <img alt="Contact Center (571) 587 02 84" src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/img/logo_pie_transparente.png"/>
+   </p>
+  </footer>
+  <!-- Placed at the end of the document so the pages load faster 
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/bootstrap.js" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/jquery.flexslider-min.js" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/jquery.isotope.js" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/jquery.fancybox.pack.js?v=2.1.0" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/rs-plugin/js/jquery.themepunch.plugins.min.js" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/rs-plugin/js/jquery.themepunch.revolution.min.js" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/revolution.custom.js" type="text/javascript">
+  </script>
+  <script src="http://serviciospub.sic.gov.co/SicPlantillas/VersionPublica/js/custom.js" type="text/javascript">
+  </script>
+ </body>
+</html>
