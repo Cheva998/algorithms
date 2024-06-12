@@ -1,8 +1,9 @@
-
+import { Comp1 as someComp } from '@components/Comp1'
 
 abstract class BaseServer {
     protected port: number;
     protected address: string;
+    protected comp: someComp = new someComp();
 
     constructor(port: number, address: string) {
         this.port = port;
@@ -33,6 +34,7 @@ class Server extends BaseServer {
 interface IServer {
     startServer(): void
     stopServer(): void
+    getData(): Promise<string>
 }
 
 class InterfacedServer implements IServer {
@@ -51,6 +53,10 @@ class InterfacedServer implements IServer {
     stopServer(): void {
         console.log(`Stoping interfaced server ... ${this.address}`)
     };
+
+    async getData(): Promise<string> {
+        return 'data'
+    }
 };
 
 const someServer = new Server(8080, 'localhost');
@@ -59,4 +65,5 @@ someServer.stopServer();
 
 const iServer: IServer = new InterfacedServer(8090, 'localhost');
 iServer.startServer();
+iServer.getData().then(value => console.log(value), reason => console.log(reason));
 iServer.stopServer();
