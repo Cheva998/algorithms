@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+      "experimentalDecorators": true,
+      "lib": [
+          "DOM",
+          "ES6"
+      ],
+      "target": "ES6",
+      "rootDir": "src",
+      "outDir": "dist",
+      "baseUrl": "src",
+      "paths": {
+          "@components/*": ["data/components/*"]
+      },
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "strictNullChecks": true,
+      "strictPropertyInitialization": true,
+      "strict": true
+  }
+}
