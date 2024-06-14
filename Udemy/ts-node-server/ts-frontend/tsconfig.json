@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "dist",
+        "rootDir": "./src",
+        "outDir": "./dist",
         "target": "ES2015",
         "module": "CommonJS",
         "lib": [
@@ -12,6 +12,7 @@
         "strict": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "./webpack.config.ts"
     ]
 }

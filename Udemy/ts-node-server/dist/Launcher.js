@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Server_1 = require("./Server");
-var Launcher = /** @class */ (function () {
-    function Launcher() {
+const Server_1 = require("./Server");
+class Launcher {
+    constructor() {
         this.server = new Server_1.Server();
     }
-    Launcher.prototype.launchApp = function () {
+    launchApp() {
         this.server.startServer();
-    };
-    return Launcher;
-}());
+    }
+}
 new Launcher().launchApp();
+//# sourceMappingURL=Launcher.js.map
