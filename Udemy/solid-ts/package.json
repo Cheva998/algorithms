@@ -12,5 +12,9 @@
   "devDependencies": {
     "parcel": "^2.12.0",
     "prettier": "3.3.3"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4"
   }
 }
