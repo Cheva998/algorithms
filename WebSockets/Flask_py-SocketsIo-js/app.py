@@ -22,7 +22,7 @@ def handle_chat_message(data):
     print(f'data received: {data}')
     username = data['username']
     message = data['message']
-    send({'username': username, 'message': message}, namespace='/chat')
+    send({'username': username, 'message': message}, namespace='/chat', broadcast=True)
 
 
 if __name__ == '__main__':
