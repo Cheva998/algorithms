@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chat app</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    </head>
+    <body>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>Chat Room</h2>
+            </div>
+            <div class="chat-messages" id="messages"></div>
+            <div class="chat-input">
+                <input type="text" id="username" placeholder="Type your name">
+                <input type="text" id="message" placeholder="Type message">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        <script>
+            const socket = io('/chat', {
+                auth: {
+                    username: 'user123'
+                }
+            });
+            const messages = document.getElementById('messages');
+            const messageInput = document.getElementById('message');
+            const usernameInput = document.getElementById('username');
+
+            socket.on('connect', () => {
+                console.log('connected to server')
+            })
+
+            socket.on('message', (data) => {
+                console.log(data);
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                messageElement.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+                messages.appendChild(messageElement);
+                messages.scrollTop = messages.scrollHeight;
+            });
+
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                const username = usernameInput.value.trim();
+
+                if (message) {
+                    socket.emit(
+                        'message',
+                        {
+                            username: username,
+                            message: message
+                        }
+                    );
+                    messageInput.value = '';
+                }
+            }
+
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            })
+        </script>
+    </body>
+</html>
