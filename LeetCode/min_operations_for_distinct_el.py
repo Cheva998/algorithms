@@ -8,13 +8,14 @@ class Solution:
     """
     def minOperations(self, nums: List[int]) -> int:
         n = len(nums)
-        freq = {}
+        freq = set()
         operations = 0
+        # Parse until -2 to include the case where all elements are unique
         for i in range(n-1, -2, -1):
             num = nums[i]
-            if freq.get(num, 0):
+            if num in freq:
                 break
-            freq[num] = 1
+            freq.add(num)
         operations = (i + 3) // 3
         return operations
         
