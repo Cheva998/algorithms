@@ -1,4 +1,5 @@
 local function newpoly(coefs)
+	-- Create a new polynomial function based on the given coefficients
 	return function (x)
 			local sum = coefs[1]
 			local xn = 1

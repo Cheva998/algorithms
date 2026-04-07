@@ -1,4 +1,5 @@
 local function poly(coefs, x)
+  -- Evaluate the polynomial defined by coefs at the value x
   local sum = coefs[1]
   local xn = 1
   for i=2, #coefs do

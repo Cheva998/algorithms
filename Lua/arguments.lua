@@ -1,4 +1,5 @@
 local function arguments(...)
+	-- Print the variable arguments and demonstrate how to pack and unpack them
 	print('vars ... ', ...)
 	local a, b, c = ...
 	print('a: ', a, 'b: ', b, 'c: ', c)
@@ -9,6 +10,7 @@ local function arguments(...)
 end
 
 local function unpack(t, i, f)
+	-- Custom unpack function that returns elements from index i to f in the table t
 	i = i or 1
 	f = f or #t
 	if i <= f then

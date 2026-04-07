@@ -1,4 +1,5 @@
 local function write_letter(filename, content)
+	-- Write the content to the specified filename
 	local file = io.open(filename, "w")
 	if file then
 		file:write(content)

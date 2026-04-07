@@ -1,5 +1,7 @@
 
 local function split(text)
+	--[[ Split the input text into words using string patterns and return 
+	them in an array ]]
 	local array = {}
 	for word in string.gmatch(text, '%a+') do
 		array[#array + 1] = word

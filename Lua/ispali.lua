@@ -1,4 +1,5 @@
 local function ispali(text)
+	-- Check if the given text is a palindrome
 	for i = 1, #text // 2 do
 		if text:sub(i,i) ~= text:sub(-i,-i) then
 			return false

@@ -1,4 +1,5 @@
 local function read_all(handle)
+	-- Read all lines from the file handle and return them as a table
 	local lines = {}
 	for line in handle:lines() do
 		table.insert(lines, line)
@@ -7,6 +8,7 @@ local function read_all(handle)
 end
 
 local function write_all(handle, lines)
+	-- Write all lines from the table to the file handle
 	for _, l in ipairs(lines) do
 		handle:write(l, '\n')
 	end
@@ -14,6 +16,7 @@ local function write_all(handle, lines)
 end
 
 local function order_lines(read_file, write_file)
+	-- Read lines from read_file, sort them, and write to write_file 
 	local in_handle = io.stdin
 	local out_handle = io.stdout
 	if read_file then

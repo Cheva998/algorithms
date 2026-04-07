@@ -1,4 +1,5 @@
 local function factorial (n)
+	-- Calculate the factorial of n using recursion
 	if n == 0 then
 		return 1
 	elseif n > 0 then

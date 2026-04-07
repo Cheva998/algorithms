@@ -1,4 +1,6 @@
 local function insert_string(word, pos, str_to_insert)
+	--[[ Insert string into word at the specified position and 
+	 return the new string ]]
 	return word:sub(0, pos - 1) .. str_to_insert .. word:sub(pos, -1)
 end
 
