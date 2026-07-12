@@ -50,6 +50,52 @@ function HeatExchanger:diffEquation()
 	return diffT
 end
 
+
+
+
+local PFR = Equipment:new()
+
+function PFR:new(o)
+	o = o or {}
+	self.__index = self
+	setmetatable(o, self)
+	self.k = self.k or 0.1 --Reaction rate constant
+	self.u = self.u or 1 --Flow velocity
+	self.CN2 = self.CN2 or 1 --Initial concentration of reactant N2
+	self.CH2 = self.CH2 or 3 --Initial concentration of product H2
+	self.CNH3 = self.CNH3 or 0 --Initial concentration of product NH3
+	return o
+end
+
+function PFR:diffEquation()
+	local r = self.k * self.CN2 * self.CH2 ^ 3 --Reaction rate
+	local dCN2 = - r / self.u
+	local dCH2 = - 3 * r / self.u
+	local dCNH3 = 2 * r / self.u
+	local diffC = {
+		dCN2 = dCN2,
+		dCH2 = dCH2,
+		dCNH3 = dCNH3
+	}
+	return diffC
+end
+
+function PFR:solve(distance)
+	local deltaX = 0.001
+	local diffC = {}
+	for i=0,distance,deltaX do
+		diffC = self:diffEquation()
+		self.CN2 = self.CN2 + diffC.dCN2 * deltaX
+		self.CH2 = self.CH2 + diffC.dCH2 * deltaX
+		self.CNH3 = self.CNH3 + diffC.dCNH3 * deltaX
+	end
+end
+
+
 local heat = HeatExchanger:new({})
 heat:solve(1)
 print(heat.Th, heat.Tc)
+
+local pfr = PFR:new({})
+pfr:solve(1)
+print(pfr.CN2, pfr.CH2, pfr.CNH3)
