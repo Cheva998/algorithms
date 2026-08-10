@@ -1,5 +1,11 @@
+local Flux = require('Lua.simulation.fluxes')
+
+---@class Equipment Parent class for other equipments
 local Equipment = {}
 
+---Method to instantiate a equipment class
+---@param o table Empty table
+---@return table equipment New object of the equipment class  
 function Equipment:new(o)
 	o = o or {}
 	self.__index = self
@@ -7,10 +13,15 @@ function Equipment:new(o)
 	return o
 end
 
+---Method with the differential equation (this is meant to be overwritten by the children classes)
+---@param x number Point at which the diff eq is evaluated
+---@return number x Value of the diff equation
 function Equipment:diffEquation(x)
 	return x
 end
 
+---Method to solve the differential equation
+---@param distance number The distance to solve the diff eq
 function Equipment:solve(distance)
 	local deltaT = 0.001
 	local diffT = {}
@@ -21,6 +32,7 @@ function Equipment:solve(distance)
 	end
 end
 
+---@class HeatExchanger: Equipment
 local HeatExchanger = Equipment:new()
 
 function HeatExchanger:new(o)
@@ -50,9 +62,7 @@ function HeatExchanger:diffEquation()
 	return diffT
 end
 
-
-
-
+---@class PFR: Equipment
 local PFR = Equipment:new()
 
 function PFR:new(o)
@@ -99,3 +109,7 @@ print(heat.Th, heat.Tc)
 local pfr = PFR:new({})
 pfr:solve(1)
 print(pfr.CN2, pfr.CH2, pfr.CNH3)
+
+local flux2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pressure = 1})
+
+print(flux2:get_cp())
