@@ -24,11 +24,11 @@ end
 ---@param distance number The distance to solve the diff eq
 function Equipment:solve(distance)
 	local deltaT = 0.001
-	local diffT = {}
+	local diff = 0
+	local prop = 0
 	for i=0,distance,deltaT do
-		diffT = self:diffEquation()
-		self.Th = self.Th + diffT.dth * deltaT
-		self.Tc = self.Tc + diffT.dtc * deltaT
+		diff = self:diffEquation(i)
+		prop = prop + diff * deltaT
 	end
 end
 
@@ -38,28 +38,47 @@ local HeatExchanger = Equipment:new()
 function HeatExchanger:new(o)
 	o = o or {}
 	self.__index = self
-
 	setmetatable(o, self)
+
 	self.U = self.U or 10 --Overall heat transfer coefficient
+	self.perimeter = self.perimeter or 1 --Perimeter of heat exchanger
+	self.hot_flux_in = o.hot_flux
+	self.cold_flux_in = o.cold_flux
+	local data = self.hot_flux_in:copy_flux()
+	self.hot_flux_out = Flux:new(data)
+	data = self.cold_flux_in:copy_flux()
+	self.cold_flux_out = Flux:new(data)
+	--------------------
 	self.Cpc = self.Cpc or 4.18 --Calorific capacity of cold fluid
 	self.Cph = self.Cph or 4.18 --Calorific capacity of hot fluid
 	self.mh = self.mh or 1 -- Mass flow rate of hot fluid
 	self.mc = self.mc or 1 --Mass flow rate of cold fluid
-	self.P = self.P or 1 --Perimeter of heat exchanger
 	self.Th = self.Th or 300 --Initial temperature of hot fluid
 	self.Tc = self.Tc or 20 --Initial temperature of cold fluid
+	----------------------------------
 	return o
 end
 
 function HeatExchanger:diffEquation()
-	local ah = self.U * self.P / (self.Cph * self.mh)
-	local ac = self.U * self.P / (self.Cpc * self.mc)
+	local ah = self.U * self.perimeter / (self.Cph * self.mh)
+	local ac = self.U * self.perimeter / (self.Cpc * self.mc)
 	local dt = self.Th - self.Tc
 	local diffT = {
 		dth = - ah * dt,
 		dtc = ac * dt
 	}
 	return diffT
+end
+
+function HeatExchanger:solve(distance)
+	local deltaT = 0.001
+	local diffT = 0
+	local prop = 0
+	for i=0, distance, deltaT do
+		diffT = self:diffEquation()
+		self.Th = self.Th + diffT.dth * deltaT
+		self.Tc = self.Tc + diffT.dtc * deltaT
+	end
 end
 
 ---@class PFR: Equipment

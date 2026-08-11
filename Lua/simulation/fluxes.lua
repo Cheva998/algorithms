@@ -36,7 +36,11 @@ end
 ---Method to return the compounds' table
 ---@return table compounds The table with the compounds:mass flux
 function Flux:get_compounds()
-    return self.compounds
+    local new_compounds = {}
+    for k, v in pairs(self.compounds) do
+        new_compounds[k] = v
+    end
+    return new_compounds
 end
 
 ---Method to return the temperature
@@ -85,4 +89,20 @@ function Flux:get_cp()
     return cp
 end
 
+---Copy the values of a flux and returns a new flux with the same values
+---@return table new_flux A new copy of the flux
+function Flux:copy_flux()
+    local new_data = {
+        temperature = self.temperature,
+        presure = self.pressure,
+        compounds = self:get_compounds()
+    }
+    return new_data
+end
+
+local flux1 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pressure = 1})
+local data = flux1:copy_flux()
+local flux2 = Flux:new(data)
+flux2.compounds.H2 = 23
+flux2.temperature = 1
 return Flux
