@@ -49,12 +49,12 @@ function HeatExchanger:new(o)
 	data = self.cold_flux_in:copy_flux()
 	self.cold_flux_out = Flux:new(data)
 	--------------------
-	self.Cpc = self.Cpc or 4.18 --Calorific capacity of cold fluid
-	self.Cph = self.Cph or 4.18 --Calorific capacity of hot fluid
-	self.mh = self.mh or 1 -- Mass flow rate of hot fluid
-	self.mc = self.mc or 1 --Mass flow rate of cold fluid
-	self.Th = self.Th or 300 --Initial temperature of hot fluid
-	self.Tc = self.Tc or 20 --Initial temperature of cold fluid
+	self.Cpc = self.cold_flux_out:get_cp() or 4.18 --Calorific capacity of cold fluid
+	self.Cph = self.hot_flux_out:get_cp() or 4.18 --Calorific capacity of hot fluid
+	self.mc = self.cold_flux_out:get_total_flux() or 1 --Mass flow rate of cold fluid
+	self.mh = self.hot_flux_out:get_total_flux() or 1 -- Mass flow rate of hot fluid
+	self.Tc = self.cold_flux_out:get_temperature() or 20 --Initial temperature of cold fluid
+	self.Th = self.hot_flux_out:get_temperature() or 300 --Initial temperature of hot fluid
 	----------------------------------
 	return o
 end
@@ -121,14 +121,21 @@ function PFR:solve(distance)
 end
 
 
-local heat = HeatExchanger:new({})
+local flux1n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 30, pressure = 1})
+local flux2n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pressure = 1})
+
+
+local heat = HeatExchanger:new({hot_flux=flux2n2h2, cold_flux=flux1n2h2})
 heat:solve(1)
-print(heat.Th, heat.Tc)
+print('-----Heat Exchanger-----')
+print('Temp hot flux:', heat.Th)
+print('Temp cold flux:', heat.Tc)
 
 local pfr = PFR:new({})
 pfr:solve(1)
-print(pfr.CN2, pfr.CH2, pfr.CNH3)
+print('\n---------Reactor---------')
+print('Flux N2: ', pfr.CN2)
+print('Flux H2: ', pfr.CH2)
+print('Flux NH3:', pfr.CNH3)
 
-local flux2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pressure = 1})
 
-print(flux2:get_cp())

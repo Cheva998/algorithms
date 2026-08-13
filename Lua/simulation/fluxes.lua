@@ -43,6 +43,16 @@ function Flux:get_compounds()
     return new_compounds
 end
 
+---Calculate the total flux (kg/s)
+---@return number total 
+function Flux:get_total_flux()
+    local total = 0
+    for _, v in pairs(self.compounds) do
+        total = total + v
+    end
+    return total
+end
+
 ---Method to return the temperature
 ---@return number temperature Temperature of the flux
 function Flux:get_temperature()
