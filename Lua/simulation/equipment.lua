@@ -79,6 +79,9 @@ function HeatExchanger:solve(distance)
 		self.Th = self.Th + diffT.dth * deltaT
 		self.Tc = self.Tc + diffT.dtc * deltaT
 	end
+	self.hot_flux_out:set_temperature(self.Th)
+	self.cold_flux_out:set_temperature(self.Tc)
+	return self.hot_flux_out, self.cold_flux_out
 end
 
 ---@class PFR: Equipment
@@ -126,10 +129,10 @@ local flux2n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pre
 
 
 local heat = HeatExchanger:new({hot_flux=flux2n2h2, cold_flux=flux1n2h2})
-heat:solve(1)
+local flux3n2h2, flux4n2h2 = heat:solve(1)
 print('-----Heat Exchanger-----')
-print('Temp hot flux:', heat.Th)
-print('Temp cold flux:', heat.Tc)
+print('Temp hot flux:', flux3n2h2:get_temperature())
+print('Temp cold flux:', flux4n2h2:get_temperature())
 
 local pfr = PFR:new({})
 pfr:solve(1)
