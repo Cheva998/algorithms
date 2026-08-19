@@ -93,6 +93,11 @@ function PFR:new(o)
 	setmetatable(o, self)
 	self.k = self.k or 0.1 --Reaction rate constant
 	self.u = self.u or 1 --Flow velocity
+	--------------------------------------
+	self.flux_in = o.flux_in
+	local data = self.flux_in:copy_flux()
+	self.flux_out = Flux:new(self.flux_in)
+	--------------------------------------
 	self.CN2 = self.CN2 or 1 --Initial concentration of reactant N2
 	self.CH2 = self.CH2 or 3 --Initial concentration of product H2
 	self.CNH3 = self.CNH3 or 0 --Initial concentration of product NH3
@@ -100,7 +105,14 @@ function PFR:new(o)
 end
 
 function PFR:diffEquation()
-	local r = self.k * self.CN2 * self.CH2 ^ 3 --Reaction rate
+	----Constants specific for Ammonia Synthesis----
+	local A = 3.64 * 10 ^ 10 -- s^-1
+	local Ea = 160000 -- J / mol
+	------------------------------------------------
+	local R = 8.314 -- J / (mol . K)
+	local T = self.flux_out:get_temperature()
+	local k = A * math.exp(-Ea / (R * T))
+	local r = k * self.CN2 * self.CH2 ^ 3 --Reaction rate
 	local dCN2 = - r / self.u
 	local dCH2 = - 3 * r / self.u
 	local dCNH3 = 2 * r / self.u
@@ -124,17 +136,21 @@ function PFR:solve(distance)
 end
 
 
-local flux1n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 30, pressure = 1})
-local flux2n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pressure = 1})
+local flux1n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 30 + 273.15, pressure = 1})
+local flux2n2h2 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300 + 273.15, pressure = 1})
 
 
 local heat = HeatExchanger:new({hot_flux=flux2n2h2, cold_flux=flux1n2h2})
 local flux3n2h2, flux4n2h2 = heat:solve(1)
 print('-----Heat Exchanger-----')
-print('Temp hot flux:', flux3n2h2:get_temperature())
-print('Temp cold flux:', flux4n2h2:get_temperature())
+print('Temp hot flux:', flux3n2h2:get_temperature(), 'K')
+print('Temp cold flux:', flux4n2h2:get_temperature(), 'K')
 
-local pfr = PFR:new({})
+----------------------
+flux4n2h2:set_temperature(500 + 273.15)
+---------------------
+
+local pfr = PFR:new({flux_in = flux4n2h2})
 pfr:solve(1)
 print('\n---------Reactor---------')
 print('Flux N2: ', pfr.CN2)
