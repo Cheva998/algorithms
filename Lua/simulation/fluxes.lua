@@ -1,8 +1,14 @@
--- Define the flux class, and the functions to get properties
+
 local database = {
     cp = {
-        H2 = 14.3, --KJ/kg K
-        N2 = 1.04, --KJ/kg K
+        H2 = 14.3, --J/g·K
+        N2 = 1.04, --J/g·K
+        NH3 = 2.2, --J/g·K
+    },
+    MW = {
+        H2 = 2.01588, -- g/mol
+        N2 = 28.0134, -- g/mol
+        NH3 = 17.03052, -- g/mol
     }
 }
 
@@ -14,6 +20,8 @@ local database = {
 local function get_cp(compound, temperature, pressure)
     return database.cp[compound]
 end
+
+-- Define the flux class, and the functions to get properties
 
 ---@class Flux
 ---@field private compounds table Table with the name or code of the compounds
@@ -65,11 +73,31 @@ function Flux:get_pressure()
     return self.pressure
 end
 
+---Method to return a table with the molecular weights
+---@return table mw Molecular weights of each compound
+function Flux:get_MW()
+    local mw = {}
+    for k, _ in pairs(self.compounds) do
+        mw[k] = database.MW[k]
+    end
+    return mw
+end
+
+function Flux:get_molar_flux()
+    local molar_flux = {}
+    local mw = self:get_MW()
+    for comp, flux in pairs(self.compounds) do
+        molar_flux[comp] = flux / mw[comp]
+    end
+    return molar_flux
+end
+
 ---Method to set the new temperature
 ---@param t number New temperature
 function Flux:set_temperature(t)
     self.temperature = t
 end
+
 
 ---Method to set the new pressure
 ---@param p number New pressure
@@ -91,7 +119,7 @@ function Flux:get_cp()
     for _, mass_flow in pairs(self.compounds) do
         total_mass = total_mass + mass_flow
     end
-    
+
     for compound, mass_flow in pairs(self.compounds) do
         local cpi = get_cp(compound, self.temperature, self.pressure)
         cp = cp + cpi * (mass_flow / total_mass)
@@ -110,9 +138,20 @@ function Flux:copy_flux()
     return new_data
 end
 
-local flux1 = Flux:new({compounds = {H2 = 3, N2 = 1}, temperature = 300, pressure = 1})
+local compounds = {H2 = 3 * 2, N2 = 1 * 28} -- g/s
+local flux1 = Flux:new({compounds = compounds, temperature = 300, pressure = 1})
 local data = flux1:copy_flux()
 local flux2 = Flux:new(data)
-flux2.compounds.H2 = 23
-flux2.temperature = 1
+
+local mw = flux2:get_MW()
+print('Molecular Weights')
+for k,v in pairs(mw) do
+    print(k, v)
+end
+
+local molar_flux = flux2:get_molar_flux()
+print('Molar fluxes')
+for k,v in pairs(molar_flux) do
+    print(k, v)
+end
 return Flux
