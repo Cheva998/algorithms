@@ -96,11 +96,12 @@ function PFR:new(o)
 	--------------------------------------
 	self.flux_in = o.flux_in
 	local data = self.flux_in:copy_flux()
-	self.flux_out = Flux:new(self.flux_in)
+	self.flux_out = Flux:new(data)
 	--------------------------------------
-	self.CN2 = self.CN2 or 1 --Initial concentration of reactant N2
-	self.CH2 = self.CH2 or 3 --Initial concentration of product H2
-	self.CNH3 = self.CNH3 or 0 --Initial concentration of product NH3
+	self.molar_flux = self.flux_out:get_molar_flux()
+	-- self.CN2 = compounds.N2 or 1 --Initial flux of reactant N2
+	-- self.CH2 = compounds.H2 or 3 --Initial flux of product H2
+	-- self.CNH3 = compounds.NH3 or 0 --Initial flux of product NH3
 	return o
 end
 
@@ -111,15 +112,25 @@ function PFR:diffEquation()
 	------------------------------------------------
 	local R = 8.314 -- J / (mol . K)
 	local T = self.flux_out:get_temperature()
+	local P = self.flux_out:get_pressure()
+	local Ftotal = 0
 	local k = A * math.exp(-Ea / (R * T))
-	local r = k * self.CN2 * self.CH2 ^ 3 --Reaction rate
-	local dCN2 = - r / self.u
-	local dCH2 = - 3 * r / self.u
-	local dCNH3 = 2 * r / self.u
+	local concentration = {}
+	for _, flux in pairs(self.molar_flux) do
+		Ftotal = Ftotal + flux
+	end
+	for comp, flux in pairs(self.molar_flux) do
+		concentration[comp] = flux * P / (Ftotal * R * T)
+	end
+	
+	local r = k * concentration.N2 * concentration.H2 ^ 3 --Reaction rate
+	self.molar_flux.N2 = - r
+	self.molar_flux.H2 = - 3 * r
+	self.molar_flux.NH3 = 2 * r
 	local diffC = {
-		dCN2 = dCN2,
-		dCH2 = dCH2,
-		dCNH3 = dCNH3
+		dFN2 = self.molar_flux.N2,
+		dFH2 = self.molar_flux.H2,
+		dFNH3 = self.molar_flux.NH3
 	}
 	return diffC
 end
@@ -129,9 +140,9 @@ function PFR:solve(distance)
 	local diffC = {}
 	for i=0,distance,deltaX do
 		diffC = self:diffEquation()
-		self.CN2 = self.CN2 + diffC.dCN2 * deltaX
-		self.CH2 = self.CH2 + diffC.dCH2 * deltaX
-		self.CNH3 = self.CNH3 + diffC.dCNH3 * deltaX
+		self.molar_flux.N2 = self.molar_flux.N2 + diffC.dFN2 * deltaX
+		self.molar_flux.H2 = self.molar_flux.H2 + diffC.dFH2 * deltaX
+		self.molar_flux.NH3 = self.molar_flux.NH3 + diffC.dFNH3 * deltaX
 	end
 end
 
@@ -153,8 +164,8 @@ flux4n2h2:set_temperature(500 + 273.15)
 local pfr = PFR:new({flux_in = flux4n2h2})
 pfr:solve(1)
 print('\n---------Reactor---------')
-print('Flux N2: ', pfr.CN2)
-print('Flux H2: ', pfr.CH2)
-print('Flux NH3:', pfr.CNH3)
+print('Flux N2: ', pfr.molar_flux.N2)
+print('Flux H2: ', pfr.molar_flux.H2)
+print('Flux NH3:', pfr.molar_flux.NH3)
 
 
